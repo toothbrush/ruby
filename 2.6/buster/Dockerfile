@@ -68,6 +68,7 @@ RUN set -eux; \
 		--build="$gnuArch" \
 		--disable-install-doc \
 		--enable-shared \
+		--with-openssl-dir=/usr/local/libressl \
 	; \
 	make -j "$(nproc)"; \
 	make install; \
