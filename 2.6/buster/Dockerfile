@@ -11,6 +11,23 @@ RUN set -eux; \
 ENV RUBY_MAJOR 2.6
 ENV RUBY_VERSION 2.6.6
 ENV RUBY_DOWNLOAD_SHA256 5db187882b7ac34016cd48d7032e197f07e4968f406b0690e20193b9b424841f
+ENV LIBRESSL_DOWNLOAD_SHA256 c4c78167fae325b47aebd8beb54b6041d6f6a56b3743f4bd5d79b15642f9d5d4
+
+RUN set -eux; \
+    \
+    wget https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.9.2.tar.gz -O libressl.tar.gz; \
+    echo "$LIBRESSL_DOWNLOAD_SHA256 *libressl.tar.gz" | sha256sum --check --strict; \
+    mkdir -p /usr/src/libressl; \
+    tar xzf libressl.tar.gz -C /usr/src/libressl --strip-components=1; \
+    rm libressl.tar.gz;
+
+RUN set -eux; \
+    \
+    cd /usr/src/libressl; \
+    ./configure --prefix=/usr/local/libressl --with-openssldir=/usr/local/libressl; \
+    make; \
+    make install;
+
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
