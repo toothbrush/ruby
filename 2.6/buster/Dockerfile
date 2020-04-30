@@ -33,6 +33,7 @@ RUN set -eux; \
 #   we purge system ruby later to make sure our final image uses what we just built
 RUN set -eux; \
 	\
+	apt-get remove -y libcurl4-openssl-dev libssl-dev; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
